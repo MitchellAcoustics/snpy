@@ -1,0 +1,81 @@
+[project]
+name = "snpy"
+version = "0.1.0"
+description = "Python interface for skew-normal distributions"
+readme = "README.md"
+authors = [
+    { name = "Andrew Mitchell", email = "a.j.mitchell@ucl.ac.uk" }
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "pandas>=2.2.3",
+]
+
+[project.urls]
+repository = "https://github.com/MitchellAcoustics/snpy"
+documentation = "https://snpy.readthedocs.io/en/latest/"
+
+[project.optional-dependencies]
+r = [
+    "rpy2>=3.5.16",
+]
+
+[dependency-groups]
+dev = [
+    "bumpver>=2023.1129",
+    "ipykernel>=6.29.5",
+    "ruff>=0.7.2",
+]
+test = [
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.3",
+]
+
+[tool.pytest.ini_options]
+addopts = "-v --tb=short --durations=5 --cov=src/snpy --cov-report=term"
+testpaths = ["test", "src/soundscapy"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+console_output_style = "count"
+doctest_optionflags = "NUMBER NORMALIZE_WHITESPACE IGNORE_EXCEPTION_DETAIL"
+markers = [
+    "optional_deps(group): mark tests that depend on optional dependencies. group can be 'audio', etc.",
+    "slow: mark test as slow",
+    "skip: mark test as skipped",
+    "skipif: mark test as skipped if condition is met",
+    "xfail: mark test as expected to fail",
+    "parametrize: mark test as parametrized"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/snpy"]
+
+[tool.bumpver]
+current_version = "v0.1.0"
+version_pattern = "vMAJOR.MINOR.PATCH[[-]PYTAGNUM]"
+commit_message = "bump version {old_version} -> {new_version}"
+tag_message = "{new_version}"
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    '^current_version = "{version}"',
+    '^version = "{pep440_version}"',
+]
